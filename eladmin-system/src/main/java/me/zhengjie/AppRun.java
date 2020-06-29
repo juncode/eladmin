@@ -67,4 +67,14 @@ public class AppRun {
     public String index() {
         return "Backend service started successfully";
     }
+
+    /**
+     * 访问首页提示
+     * @return /
+     */
+    @GetMapping("/test")
+    @AnonymousAccess
+    public String test() {
+        return "test";
+    }
 }
