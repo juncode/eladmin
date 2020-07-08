@@ -1,6 +1,10 @@
 package me.zhengjie.service;
 
 import me.zhengjie.domain.BillDetail;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Map;
+import java.util.Set;
 
 public interface BillDetailService {
     /**
@@ -18,4 +22,29 @@ public interface BillDetailService {
      * @return EmailConfig 邮件配置
      */
     BillDetail find();
+
+    /**
+     * 创建
+     * @param billDetail /
+     */
+    void create(BillDetail billDetail);
+
+    /**
+     * 编辑
+     * @param billDetail /
+     */
+    void update(BillDetail billDetail);
+
+    /**
+     * 删除
+     * @param ids /
+     */
+    void delete(Set<Long> ids);
+
+    /**
+     * 上传账单
+     * @param file 文件
+     * @return /
+     */
+    Map<String, String> uploadBill(MultipartFile file);
 }

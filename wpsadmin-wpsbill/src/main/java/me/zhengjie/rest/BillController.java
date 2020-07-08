@@ -3,20 +3,24 @@ package me.zhengjie.rest;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import me.zhengjie.annotation.Log;
 import lombok.extern.slf4j.Slf4j;
+import me.zhengjie.domain.BillDetail;
 import me.zhengjie.service.BillDetailService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import me.zhengjie.annotation.AnonymousAccess;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
- * @author Zheng Jie
- * @date 2018-12-31
+ * @author Huangjun
+ * @date 2020年7月8日
  */
 @Slf4j
 @RestController
@@ -56,5 +60,39 @@ public class BillController {
     public ResponseEntity<Object> getData(){
         //从db获取数据
         return new ResponseEntity<>(billDetailService.find(), HttpStatus.OK);
+    }
+
+    @Log("新增账单")
+    @AnonymousAccess
+    @ApiOperation(value = "新增账单")
+    @PostMapping
+    public ResponseEntity<Object> create(@Validated @RequestBody BillDetail resources){
+        billDetailService.create(resources);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @Log("修改账单")
+    @AnonymousAccess
+    @ApiOperation(value = "修改账单")
+    @PutMapping
+    public ResponseEntity<Object> update(@Validated @RequestBody BillDetail resources){
+        billDetailService.update(resources);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @Log("删除账单")
+    @AnonymousAccess
+    @ApiOperation(value = "删除账单")
+    @DeleteMapping
+    public ResponseEntity<Object> delete(@RequestBody Set<Long> ids){
+        billDetailService.delete(ids);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @ApiOperation("上传账单")
+    @AnonymousAccess
+    @PostMapping(value = "/upload")
+    public ResponseEntity<Object> uploadBill(@RequestParam MultipartFile bill){
+        return new ResponseEntity<>(billDetailService.uploadBill(bill), HttpStatus.OK);
     }
 }

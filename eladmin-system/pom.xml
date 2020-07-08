@@ -28,6 +28,10 @@
                     <groupId>me.zhengjie</groupId>
                     <artifactId>eladmin-common</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>me.zhengjie</groupId>
+                    <artifactId>eladmin-logging</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
         <!-- 代码生成模块 -->

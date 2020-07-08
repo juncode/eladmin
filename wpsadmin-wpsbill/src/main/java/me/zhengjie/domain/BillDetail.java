@@ -15,6 +15,8 @@
  */
 package me.zhengjie.domain;
 
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.bean.copier.CopyOptions;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import javax.persistence.*;
@@ -34,6 +36,7 @@ public class BillDetail implements Serializable {
     @Id
     @Column(name = "id")
     @ApiModelProperty(value = "ID", hidden = true)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank
@@ -63,4 +66,8 @@ public class BillDetail implements Serializable {
     @NotBlank
     @ApiModelProperty(value = "金额")
     private String amount;
+
+    public void copy(BillDetail source){
+        BeanUtil.copyProperties(source,this, CopyOptions.create().setIgnoreNullValue(true));
+    }
 }
