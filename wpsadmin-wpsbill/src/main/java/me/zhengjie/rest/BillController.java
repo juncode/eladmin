@@ -14,6 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -92,7 +93,7 @@ public class BillController {
     @ApiOperation("上传账单")
     @AnonymousAccess
     @PostMapping(value = "/upload")
-    public ResponseEntity<Object> uploadBill(@RequestParam MultipartFile bill){
+    public ResponseEntity<Object> uploadBill(@RequestParam MultipartFile bill) throws IOException {
         return new ResponseEntity<>(billDetailService.uploadBill(bill), HttpStatus.OK);
     }
 }

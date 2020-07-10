@@ -3,12 +3,20 @@ package me.zhengjie.service.impl;
 import lombok.RequiredArgsConstructor;
 import me.zhengjie.config.FileProperties;
 import me.zhengjie.domain.BillDetail;
+import me.zhengjie.excel.KsyunBillExcel;
 import me.zhengjie.repository.BillDetailRepository;
 import me.zhengjie.service.BillDetailService;
 import me.zhengjie.utils.FileUtil;
 import me.zhengjie.utils.SecurityUtils;
 import me.zhengjie.utils.StringUtils;
 import me.zhengjie.utils.ValidationUtil;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -16,6 +24,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -68,10 +79,16 @@ public class BillDetailServiceImpl implements BillDetailService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Map<String, String> uploadBill(MultipartFile multipartFile) {
+    public Map<String, String> uploadBill(MultipartFile multipartFile) throws IOException {
         File file = FileUtil.upload(multipartFile, properties.getPath().getPath());
         // excel 文件内容处理
+        List<BillDetail> data = new ArrayList<>();
+        try {
+            data = KsyunBillExcel.read(file);
+        }catch (Exception exception) {
+            String err = "erro";
+        }
 
-        return new HashMap<String,String>(){{put("filePath",file.getName());}};
+        return new HashMap<String,String>(){{put("filePath", "ss");}};
     }
 }

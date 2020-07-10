@@ -19,9 +19,13 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.util.Date;
 
 /**
  * 邮件配置类，数据存覆盖式存入数据存
@@ -30,7 +34,7 @@ import java.io.Serializable;
  */
 @Entity
 @Data
-@Table(name = "wps_bill_detail")
+@Table(name = "bill_origin_detail")
 public class BillDetail implements Serializable {
 
     @Id
@@ -40,32 +44,32 @@ public class BillDetail implements Serializable {
     private Long id;
 
     @NotBlank
-    @ApiModelProperty(value = "账单来源")
-    private String source;
+    @ApiModelProperty(value = "厂商")
+    private String platform;
 
     @NotBlank
-    @ApiModelProperty(value = "账单类型")
-    private String type;
-
-    @NotBlank
-    @ApiModelProperty(value = "小组")
-    private String g_name;
-
-    @NotBlank
-    @ApiModelProperty(value = "功能业务")
-    private String func_name;
-
-    @NotBlank
-    @ApiModelProperty(value = "账单标题")
+    @ApiModelProperty(value = "费用标题")
     private String title;
 
     @NotBlank
-    @ApiModelProperty(value = "描述")
-    private String detail;
+    @ApiModelProperty(value = "费用类型")
+    private String type;
 
     @NotBlank
-    @ApiModelProperty(value = "金额")
-    private String amount;
+    @ApiModelProperty(value = "标识")
+    private String key;
+
+    @NotBlank
+    @ApiModelProperty(value = "费用金额")
+    private Float fee;
+
+    @NotBlank
+    @ApiModelProperty(value = "费用日期-年月")
+    private LocalDate month;
+
+    @CreationTimestamp
+    @ApiModelProperty(value = "创建日期")
+    private Timestamp create_time;
 
     public void copy(BillDetail source){
         BeanUtil.copyProperties(source,this, CopyOptions.create().setIgnoreNullValue(true));
